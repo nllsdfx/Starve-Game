@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private bool _enemimiesMoving;
     private bool _isDoingSetup;
     private GameObject tryAgain;
+    private GameObject _maxDaysImage;
     
     public int playerFoodPoints = 100;
     [HideInInspector] public bool playerTurn = true;
@@ -46,19 +47,26 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("OnEnable");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        Debug.Log("OnDisable");
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void OnSceneLoaded(Scene arg0, LoadSceneMode loadSceneMode)
     {    
         _level++;
+
+        int maxLevel = PlayerPrefs.GetInt("max_level", 1);
+
+        if (maxLevel < _level)
+        {
+            PlayerPrefs.SetInt("max_level", _level);
+            PlayerPrefs.Save();
+        }
+        
         InitGame();
     }
     
@@ -70,6 +78,8 @@ public class GameManager : MonoBehaviour
         _levelText = GameObject.Find("LevelText").GetComponent<Text>();
         _levelText.text = "Day " + _level;
         _levelImage.SetActive(true);
+        _maxDaysImage = GameObject.Find("MaxDaysText");
+        _maxDaysImage.SetActive(false);
         tryAgain = GameObject.Find("TryAgain");
         tryAgain.GetComponent<Button>().onClick.AddListener(() => {Invoke(nameof(RestartGame), 1f);});
         tryAgain.SetActive(false);
@@ -97,8 +107,10 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        _maxDaysImage.GetComponent<Text>().text = "Max days alive: " + PlayerPrefs.GetInt("max_level");
         _levelText.text = "After " + _level + " days you've starved.";
         _levelImage.SetActive(true);
+        _maxDaysImage.SetActive(true);
         tryAgain.SetActive(true);
     }
 
