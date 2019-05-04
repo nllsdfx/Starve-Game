@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Screen.orientation = ScreenOrientation.Landscape;
+        
         if (instance == null)
         {
             instance = this;

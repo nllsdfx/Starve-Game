@@ -39,11 +39,11 @@ public class BoardManager : MonoBehaviour
         InitializeList();
         LayoutAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
         LayoutAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
-        int enemyCount = (int) Mathf.Log(level, 2f);
+        int enemyCount = (int) Mathf.Sqrt(level * 2) - 1;
         LayoutAtRandom(enemyTiles, enemyCount, enemyCount);
         Instantiate(exit, new Vector2(columns - 1, rows - 1), Quaternion.identity);
-
     }
+
 
     private void InitializeList()
     {
