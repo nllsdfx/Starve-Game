@@ -16,7 +16,7 @@ public class Player : MovingObject
 
     private Animator animator;
 
-    private int food;
+    public int food;
 
     public AudioClip moveSound1;
     public AudioClip moverSound2;

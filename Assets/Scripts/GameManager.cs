@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +18,8 @@ public class GameManager : MonoBehaviour
     private List<Enemy> _enemies;
     private bool _enemimiesMoving;
     private bool _isDoingSetup;
-
+    private GameObject tryAgain;
+    
     public int playerFoodPoints = 100;
     [HideInInspector] public bool playerTurn = true;
     public float turnDelay = .1f;
@@ -39,15 +39,18 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         _enemies = new List<Enemy>();
         boardManager = GetComponent<BoardManager>();
+        
     }
 
     private void OnEnable()
     {
+        Debug.Log("OnEnable");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
+        Debug.Log("OnDisable");
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -65,10 +68,24 @@ public class GameManager : MonoBehaviour
         _levelText = GameObject.Find("LevelText").GetComponent<Text>();
         _levelText.text = "Day " + _level;
         _levelImage.SetActive(true);
+        tryAgain = GameObject.Find("TryAgain");
+        tryAgain.GetComponent<Button>().onClick.AddListener(() => {Invoke(nameof(RestartGame), 1f);});
+        tryAgain.SetActive(false);
+        
         Invoke(nameof(HideLevelImage), levelStartDelay);
         _enemies.Clear();
         boardManager.SetupScene(_level);
     }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+        _level = 0;
+        GameObject player = GameObject.FindWithTag("Player");
+        player.GetComponent<Player>().food = 100;
+        SoundManager.instance.musicSource.Play();
+    }
+    
 
     private void HideLevelImage()
     {
@@ -80,7 +97,7 @@ public class GameManager : MonoBehaviour
     {
         _levelText.text = "After " + _level + " days you've starved.";
         _levelImage.SetActive(true);
-        enabled = false;
+        tryAgain.SetActive(true);
     }
 
     IEnumerator MoveEnemies()
