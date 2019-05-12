@@ -62,6 +62,8 @@ public class Enemy : MovingObject
         {
             xDir = target.position.x > transform.position.x ? 1 : -1;
         }
+
+        transform.localRotation = Quaternion.Euler(0, xDir == 1 ? 180 : 0, 0);
         
         AttemptMove<Player>(xDir, yDir);
     }

@@ -84,10 +84,13 @@ public class Player : MovingObject
         horizontal = (int) Input.GetAxisRaw("Horizontal");
         vertical = (int) Input.GetAxisRaw("Vertical");
 
+
         if (horizontal != 0)
         {
             vertical = 0;
         }
+
+        transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
 
 #else
         if (Input.touchCount > 0)
