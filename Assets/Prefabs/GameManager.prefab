@@ -44,14 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fe8783bae19c946adf3dae6ca5d5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 12
+  columns: 16
   rows: 8
   wallCount:
-    minimum: 5
-    maximum: 9
+    minimum: 6
+    maximum: 12
   foodCount:
     minimum: 1
-    maximum: 5
+    maximum: 6
   exit: {fileID: 6084833937195001361, guid: 173def7e65d7297419affcf2ceeee603, type: 3}
   floorTiles:
   - {fileID: 7614280973559892501, guid: 63f1b344220515b44b46157a51db9b5b, type: 3}

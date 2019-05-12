@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     public float levelStartDelay = 2f;
     
-    private int _level = 0;
+    private int _level;
     private Text _levelText;
     private GameObject _levelImage;
     private List<Enemy> _enemies;
