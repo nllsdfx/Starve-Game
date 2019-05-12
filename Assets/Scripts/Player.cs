@@ -90,8 +90,6 @@ public class Player : MovingObject
             vertical = 0;
         }
 
-        transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
-
 #else
         if (Input.touchCount > 0)
         {
@@ -116,9 +114,13 @@ public class Player : MovingObject
                 {
                     vertical = y > 0 ? 1 : -1;
                 }
+
             }
         }
 #endif
+
+        transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
+
 
         if (horizontal != 0 || vertical != 0)
         {
