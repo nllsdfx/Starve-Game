@@ -12,14 +12,15 @@ public class GameManager : MonoBehaviour
 
     public float levelStartDelay = 2f;
     
-    private int _level;
+    private int _level = 0;
     private Text _levelText;
     private GameObject _levelImage;
     private List<Enemy> _enemies;
-    private bool _enemimiesMoving;
+    private bool _enemiesMoving;
     private bool _isDoingSetup;
-    private GameObject tryAgain;
+    private GameObject _tryAgain;
     private GameObject _maxDaysImage;
+    private bool _isGameOver;
     
     public int playerFoodPoints = 100;
     [HideInInspector] public bool playerTurn = true;
@@ -80,9 +81,9 @@ public class GameManager : MonoBehaviour
         _levelImage.SetActive(true);
         _maxDaysImage = GameObject.Find("MaxDaysText");
         _maxDaysImage.SetActive(false);
-        tryAgain = GameObject.Find("TryAgain");
-        tryAgain.GetComponent<Button>().onClick.AddListener(() => {Invoke(nameof(RestartGame), 1f);});
-        tryAgain.SetActive(false);
+        _tryAgain = GameObject.Find("TryAgain");
+        _tryAgain.GetComponent<Button>().onClick.AddListener(() => {Invoke(nameof(RestartGame), 1f);});
+        _tryAgain.SetActive(false);
         
         Invoke(nameof(HideLevelImage), levelStartDelay);
         _enemies.Clear();
@@ -96,6 +97,7 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         player.GetComponent<Player>().food = 100;
         SoundManager.instance.musicSource.Play();
+        _isGameOver = false;
     }
     
 
@@ -111,12 +113,14 @@ public class GameManager : MonoBehaviour
         _levelText.text = "After " + _level + " days you've starved.";
         _levelImage.SetActive(true);
         _maxDaysImage.SetActive(true);
-        tryAgain.SetActive(true);
+        _tryAgain.SetActive(true);
+        _isGameOver = true;
     }
 
     IEnumerator MoveEnemies()
     {
-        _enemimiesMoving = true;
+        _enemiesMoving = true;
+        
         yield return new WaitForSeconds(turnDelay);
 
         if (_enemies.Count == 0)
@@ -126,19 +130,22 @@ public class GameManager : MonoBehaviour
         
         foreach (var enemy in _enemies)
         {
+            
             enemy.Move();
-            yield return new WaitForSeconds(enemy.moveTime);
+            
+            yield return new WaitForSeconds(turnDelay / _enemies.Count);
         }
+        
 
         playerTurn = true;
-        _enemimiesMoving = false;
+        _enemiesMoving = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerTurn || _enemimiesMoving || _isDoingSetup)
+        if (playerTurn || _enemiesMoving || _isDoingSetup || _isGameOver)
         {
             return;
         }

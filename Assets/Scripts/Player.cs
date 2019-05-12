@@ -80,7 +80,7 @@ public class Player : MovingObject
         int vertical = 0;
 
 #if UNITY_EDITOR|| UNITY_STANDALONE || UNITY_WEBPLAYER
-        
+
         horizontal = (int) Input.GetAxisRaw("Horizontal");
         vertical = (int) Input.GetAxisRaw("Vertical");
 
@@ -129,24 +129,29 @@ public class Player : MovingObject
 
         if (hitWall != null)
         {
+            food--;
             hitWall.DamageWall(wallDamage);
             animator.SetTrigger("PlayerChop");
         }
     }
 
-    protected override void AttemptMove<T>(int xDir, int yDir)
+    protected override bool AttemptMove<T>(int xDir, int yDir)
     {
-        food--;
-        SetFoodText();
-        base.AttemptMove<T>(xDir, yDir);
-        RaycastHit2D hit;
-        if (Move(xDir, yDir, out hit))
+        bool canMove = base.AttemptMove<T>(xDir, yDir);
+
+        if (canMove)
         {
+            food--;
             SoundManager.instance.RandomizeSFX(moveSound1, moverSound2);
         }
 
         CheckIfGameOver();
+
         GameManager.instance.playerTurn = false;
+
+        SetFoodText();
+
+        return canMove;
     }
 
     private void Restart()
