@@ -47,10 +47,10 @@ MonoBehaviour:
   columns: 16
   rows: 8
   wallCount:
-    minimum: 6
-    maximum: 12
+    minimum: 8
+    maximum: 14
   foodCount:
-    minimum: 1
+    minimum: 2
     maximum: 6
   exit: {fileID: 6084833937195001361, guid: 173def7e65d7297419affcf2ceeee603, type: 3}
   floorTiles:

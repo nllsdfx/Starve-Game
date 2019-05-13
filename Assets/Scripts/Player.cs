@@ -87,6 +87,7 @@ public class Player : MovingObject
 
         if (horizontal != 0)
         {
+            transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
             vertical = 0;
         }
 
@@ -109,6 +110,7 @@ public class Player : MovingObject
                 if (Mathf.Abs(x) > Mathf.Abs(y))
                 {
                     horizontal = x > 0 ? 1 : -1;
+                    transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
                 }
                 else if (Mathf.Abs(y) > 0)
                 {
@@ -118,8 +120,6 @@ public class Player : MovingObject
             }
         }
 #endif
-
-        transform.localRotation = Quaternion.Euler(0, horizontal == -1 ? 180 : 0, 0);
 
 
         if (horizontal != 0 || vertical != 0)
