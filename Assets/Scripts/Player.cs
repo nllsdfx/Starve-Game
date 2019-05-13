@@ -110,11 +110,11 @@ public class Player : MovingObject
                 {
                     horizontal = x > 0 ? 1 : -1;
                 }
-                else
+                else if (Mathf.Abs(y) > 0)
                 {
                     vertical = y > 0 ? 1 : -1;
                 }
-
+                
             }
         }
 #endif
